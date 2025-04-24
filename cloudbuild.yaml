@@ -1,0 +1,8 @@
+
+- name: 'google/cloud-sdk:slim'
+  entrypoint: 'gcloud'
+  args: ['functions', 'deploy', 'stream-firestore-updates', '--source=.', '--entry-point=streamFirestoreUpdates', '--gen2', '--runtime=nodejs22', '--ingress-settings=internal-only', '--trigger-location=nam5', '--trigger-event-filters=type=google.cloud.firestore.document.v1.written', "--trigger-event-filters=database='(default)'", '--memory=1024MB', '--cpu=1', '--timeout=300s', '--concurrency=80', '--region=us-central1' ]
+
+- name: 'google/cloud-sdk:slim'
+  entrypoint: 'gcloud'
+  args: ['functions', 'deploy', 'sync-batched-updates-to-tables', '--source=.', '--entry-point=syncBatchedUpdatesToTables', '--gen2', '--runtime=nodejs22', '--ingress-settings=internal-only', '--trigger-http', '--memory=1024MB', '--region=us-central1']

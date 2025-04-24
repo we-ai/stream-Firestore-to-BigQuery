@@ -34,7 +34,7 @@ npm install
 
 #### Adjust settings in `settings.js` file
 
-Check the `settings.js` file for any necessary configurations, such as target dataset name, buffer dataset nae, error and warning table names, collection names to be tracked.
+Check the `settings.js` file for any necessary configurations, such as target dataset name, buffer dataset name, error and warning table names, collection names to be tracked.
 
 #### Adjust table schemas in `tableSchemas.js` file
 
@@ -81,7 +81,7 @@ gcloud functions deploy stream-firestore-updates \
 
 The `stream-firestore-updates` function is triggered by Firestore write events. It streams the changes to buffer dataset (default name `firstore_stream_buffer`) in BigQuery.
 
-#### Deploy function `syncBatchedUpdatesToTables` triggered by HTTP request
+#### Deploy function triggered by HTTP requests
 
 ```bash
 gcloud functions deploy sync-batched-updates-to-tables \
@@ -94,5 +94,5 @@ gcloud functions deploy sync-batched-updates-to-tables \
 --ingress-settings=internal-only
 ```
 
-The `syncBatchedUpdatesToTables` function is responsible for merging the buffered data into the tartet tables in dataset (default name `firestore_streram`).
+The `sync-batched-updates-to-tables` function is responsible for merging the buffered data into the target tables in dataset (default name `firestore_streram`).
 HTTP requests to this function can be scheduled using Cloud Scheduler or triggered manually.

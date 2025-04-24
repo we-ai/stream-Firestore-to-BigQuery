@@ -20,7 +20,7 @@ This project contains Google Cloud Functions that streams data from Firestore to
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/episphere/stream-Firestore-to-BigQuery.git
 cd stream-Firestore-to-BigQuery
 ```
 

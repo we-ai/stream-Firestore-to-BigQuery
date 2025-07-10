@@ -40,7 +40,7 @@ export const formatSchemas = (inputSchemas) => {
     { name: "createdAt", type: "STRING" },
     { name: "updatedAt", type: "STRING" },
   ];
-  const commenNames = new Set(commonFields.map((field) => field.name));
+  const commonNames = new Set(commonFields.map((field) => field.name));
   let formattedSchemas = {};
 
   for (const tableName in inputSchemas) {
@@ -48,7 +48,7 @@ export const formatSchemas = (inputSchemas) => {
     let visitedNames = new Set();
     let adjustedSchema = [];
     for (const field of currSchema) {
-      if (visitedNames.has(field.name) || commenNames.has(field.name)) continue;
+      if (visitedNames.has(field.name) || commonNames.has(field.name)) continue;
       visitedNames.add(field.name);
       adjustedSchema.push(field);
     }
@@ -91,7 +91,9 @@ export const createTable = async (datasetName, tableName, fieldArray) => {
 
 export const createAllBufferTables = async () => {
   for (const tableName in allSchemas) {
-    await createTable(bufferDatasetName, tableName, allSchemas[tableName]);
+    const schema = allSchemas[tableName];
+    schema.splice(3, 0, { name: "isDeleted", type: "BOOLEAN" }); // Use `isDeleted` field to mark deleted records in buffer tables.
+    await createTable(bufferDatasetName, tableName, schema);
   }
 };
 

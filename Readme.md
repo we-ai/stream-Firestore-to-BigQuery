@@ -1,15 +1,15 @@
 # Stream Firestore to BigQuery
 
-This project contains Google Cloud Functions that streams data from Firestore to BigQuery in real-time. It also includes utility functions to manage tables and table schemas in BigQuery using command lines.
+This project contains Google Cloud Functions that stream data from Firestore to BigQuery in real-time. It also includes utility functions to manage tables and table schemas in BigQuery using command line.
 
 ## Features
 
-- Real-time streaming of Firestore changes to a buffer tables in BigQuery. Nested objects and arrays are flattened for easier querying. During this process:
-  - Warning messages are saved in a warning table for records have schema issue compared with pre-defined schema.
-  - Error messages are saved in a error table for records that cannot be successfully processed.
-  - Other logic (data cleanup, data transormation, etc) can be added in this process
+- Real-time streaming of Firestore changes to buffer tables in BigQuery. Nested objects and arrays are flattened. During this process:
+  - Warning messages are saved in a warning table for records that have schema issues compared with the pre-defined schema.
+  - Error messages are saved in an error table for records that cannot be successfully processed.
+  - Other logic (data cleanup, data transformation, etc.) can be added in this process
 - At defined intervals (e.g. every 30 minutes), buffer tables are synchronized into target tables (the tables to be used for downstream analysis). The data sync is scheduled using Cloud Scheduler, but can also be triggered manually for flexibility.
-- `localRun.js` can run directly, or accept arguments from command line, to use local utility functions for manual managing Firestore and BigQuery data.
+- `localRun.js` can run directly, or accept arguments from the command line, to use local utility functions for manually managing Firestore and BigQuery data.
 
 ## Prerequisites
 
@@ -44,19 +44,19 @@ Check the `tableSchemas.js` file for the schemas of the target tables. Adjust th
 
 #### Create tables in BigQuery
 
-Create buffer tables for an environment (e.g. dev, prod). Defined dataset name and table schemas are used in this step.
+Create buffer tables for an environment (e.g., dev, prod). The defined dataset name and table schemas are used in this step.
 
 ```bash
 node localRun.js --entry createAllBufferTables --gcloud --env dev
 ```
 
-Create target tables for an environment (e.g. dev, prod)
+Create target tables for an environment (e.g., dev, prod)
 
 ```bash
 node localRun.js --entry createAllTargetTables --gcloud --env dev
 ```
 
-Create error and warning tables for an environment (e.g. dev, prod)
+Create error and warning tables for an environment (e.g., dev, prod)
 
 ```bash
 node localRun.js --entry createLogTables --gcloud --env dev
@@ -81,7 +81,7 @@ gcloud functions deploy stream-firestore-updates \
 --concurrency=80
 ```
 
-The `stream-firestore-updates` function is triggered by Firestore write events. It streams the changes to buffer dataset (default name `firstore_stream_buffer`) in BigQuery.
+The `stream-firestore-updates` function is triggered by Firestore write events. It streams the changes to the buffer dataset (default name `firestore_stream_buffer`) in BigQuery.
 
 #### Deploy function triggered by HTTP requests
 
@@ -96,5 +96,5 @@ gcloud functions deploy sync-batched-updates-to-tables \
 --ingress-settings=internal-only
 ```
 
-The `sync-batched-updates-to-tables` function is responsible for merging the buffered data into the target tables in dataset (default name `firestore_streram`).
+The `sync-batched-updates-to-tables` function is responsible for merging the buffered data into the target tables in the dataset (default name `firestore_stream`).
 HTTP requests to this function can be scheduled using Cloud Scheduler or triggered manually.

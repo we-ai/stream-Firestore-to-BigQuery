@@ -4,9 +4,11 @@ This project contains Google Cloud Functions that streams data from Firestore to
 
 ## Features
 
-- Real-time synchronization of Firestore changes to a buffer dataset in BigQuery.
-- Batched updates to target tables in BigQuery at defined intervals (e.g. every 30 minutes).
-- Error handling and logging for BigQuery operations.
+- Real-time streaming of Firestore changes to a buffer tables in BigQuery. Nested objects and arrays are flattened for easier querying. During this process:
+  - Warning messages are saved in a warning table for records have schema issue compared with pre-defined schema.
+  - Error messages are saved in a error table for records that cannot be successfully processed.
+  - Other logic (data cleanup, data transormation, etc) can be added in this process
+- At defined intervals (e.g. every 30 minutes), buffer tables are synchronized into target tables (the tables to be used for downstream analysis). The data sync is scheduled using Cloud Scheduler, but can also be triggered manually for flexibility.
 - `localRun.js` can run directly, or accept arguments from command line, to use local utility functions for manual managing Firestore and BigQuery data.
 
 ## Prerequisites
